@@ -7,7 +7,7 @@ class Red(Exception):
 
 def sumof(obj):
     try:
-        return 0 + obj  # works for numbers
+        return 0 + obj  # works for numbers (and booleans)
     except:
         if len(obj):
             try:
@@ -19,7 +19,7 @@ def sumof(obj):
                 try:
                     return sum(map(sumof, obj))  # works on list (json array)
                 except:
-                    return 0  # This should be a string, or Red raised
+                    return 0  # If string (or any illegal element), or Red raised 
         else:
             return 0
 
