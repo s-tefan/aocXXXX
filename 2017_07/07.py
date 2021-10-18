@@ -2,26 +2,24 @@ with open("input.txt") as f:
     lines = f.readlines()
 
 
+def check_weight(tower, name):
+    children = tower[name]["children"]
+    totals = [tower[c]["total"] for c in children]
+    if len(set(totals)) == 1:
+        return name, tower[name]
+    for k in range(len(totals)):
+        mupp = len(set(totals[:k] + totals[k+1:]))
+        if mupp == 1:
+            return check_weight(tower, tower[name]["children"][k])
+        elif mupp == 0:
+            raise Exception("Nä?!")
 
-def total_weight(tower, bottom):
-    print(bottom)
-    subtowers = tower[bottom]["children"]
-    if subtowers == set():
-        return tower[bottom]["weight"]
-    else:
-        subweights = list(map(lambda x : total_weight(tower, x), subtowers))
-        if len(set(subweights)) == 1:
-            weight = sum(subweights) + tower[bottom]["weight"]
-            print(bottom, weight)
-            return weight
-        else:
-            for k in range(len(subweights)):
-                # Äsch. Behöver dra igenom deltornen
-                bla = subweights[k]
-                blu = set(subweights[:k]+subweights[k+1:])
-                if len(blu) == 1:
-                    corrected_weight = "bluppblupp"
-            raise Exception("För Sören! " + bottom + " " + str(corrected_weight))
+
+
+def update_total_weight(tower, name):
+    upd = lambda x : update_total_weight(tower, x)
+    tower[name]["total"] = sum(map(upd, tower[name]["children"])) + tower[name]["weight"]
+    return tower[name]["total"]
 
 
 
@@ -36,9 +34,9 @@ for line in lines:
     ap[name]['weight'] = weight
     try:
         cpre = s[1].split(',')
-        ap[name]['children'] = set(map(lambda cs : cs.strip(), cpre))
+        ap[name]['children'] = list(map(lambda cs : cs.strip(), cpre))
     except:
-        ap[name]['children'] = set()
+        ap[name]['children'] = list()
 
 for grej in ap:
     for child in ap[grej]["children"]:
@@ -49,8 +47,11 @@ for grej in ap:
     if not(ap[grej]["is_child"]):
         bottoms.add(grej)
 
+print(ap)
 
 for bottom in bottoms:
+    update_total_weight(ap, bottom)
     print(bottom)
-    print(total_weight(ap, bottom))
+    cw = check_weight(ap, bottom)
+    
 
