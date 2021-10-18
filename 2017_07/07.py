@@ -1,5 +1,4 @@
-with open("input.txt") as f:
-    lines = f.readlines()
+
 
 
 def check_weight(tower, name):
@@ -22,7 +21,8 @@ def update_total_weight(tower, name):
     return tower[name]["total"]
 
 
-
+with open("input.txt") as f:
+    lines = f.readlines()
 
 ap = {}
 for line in lines:
