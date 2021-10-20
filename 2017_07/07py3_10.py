@@ -13,10 +13,11 @@ def read_file(file_name):
         lines = f.readlines()
         for line in lines:
             tower = read_line(line)
-            tower['is_root' = True]
+            tower['is_root'] = True
             tower_dict[tower['name']: tower]
     for name in tower_dict:
         for subname in tower_dict[name]['subtowers']:
             tower_dict[name]['is_root'] = False
     return tower_dict
 
+td = read_file('input.txt')
